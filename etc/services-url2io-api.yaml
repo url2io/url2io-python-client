@@ -1,0 +1,348 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "URL2io API"
+  description: "URL2io API 包含 URL2Article 和 URL2NLP 两个服务，实现网页结构智能解析和文本信息智能处理。\n
+    当前文档包含所有可用的 API 及使用方法([详细文档](http://url2io.applinzi.com/docs))。\n
+    API使用 `token`进行认证，[注册](http://url2io.applinzi.com/accounts/register)后可得。[点此查看token](http://url2io.applinzi.com/console/user/profile)"
+  termsOfService: ""
+  contact:
+     name: "url2io"
+     url: "http://url2io.applinzi.com"
+     email: "url2#sina.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "url2api.applinzi.com"
+basePath: "/"
+
+tags:
+  - name: "URL2Article"
+    description: "网页结构智能解析服务"
+    externalDocs:
+      description: ""
+      url: "http://url2io.applinzi.com"
+
+  - name: "URL2NLP"
+    description: "文本信息智能处理服务"
+    externalDocs:
+      description: ""
+      url: "http://url2io.applinzi.com"
+
+schemes:
+  - "http"
+  - "https"
+
+securityDefinitions:
+  token_in_query:
+    name: token
+    type: apiKey
+    in: query
+    description: 开发者 `token`，[注册](http://url2io.applinzi.com/accounts/register)后可得。[点此查看token](http://url2io.applinzi.com/console/user/profile)
+
+paths:
+  /article:
+    get:
+      tags:
+        - "URL2Article"
+      summary: "网页结构智能解析 HTTP Get 接口"
+      description: "用来提取并解析网页中的正文区域，实现网页正文提取、标题提取、发布日期提取、下一页链接提取等。"
+      operationId: "getArticle"
+      security:
+        - token_in_query: []
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "url"
+          in: "query"
+          description: "要提取正文网页的网址，参考 [URL Encoding](http://www.w3schools.com/tags/ref_urlencode.asp)"
+          required: true
+          type: string
+        - name: "fields"
+          in: "query"
+          required: false
+          type: array
+          items:
+            type: string
+            enum:
+              - next
+              - text
+              - markdown
+          collectionFormat: csv
+          description: "指示需要额外返回的额外字段，取值为：\n
+- `next`: 表示要提取下一页链接。 \n
+- `text`: 表示要返回正文的纯文字格式。 \n
+- `markdown`: 表示返回正文的markdown格式。 \n
+        构造url时多个值通过','号隔开，如`?fields=text,next`。调用sdk时使用列表即可，如fields= ['text', 'markdown']。"
+        - name: "callback"
+          in: "query"
+          description: "使用jsonp实现Ajax跨域请求时需要传此参数"
+          required: false
+          type: string
+      responses:
+        "200":
+          description: "调用成功"
+          schema:
+            $ref: "#/definitions/ArticleForResponse"
+        "400":
+          description: "参数错误"
+        "403":
+          description: "token认证错误、已超出使用配额"
+        "500":
+          description: "服务内部错误"
+
+    post:
+      tags:
+        - "URL2Article"
+      summary: "网页结构智能解析 HTTP Post 接口"
+      description: "用来提取并解析网页中的正文区域，实现网页正文提取、标题提取、发布日期提取、下一页链接提取等。"
+      operationId: "getArticleByPost"
+      security:
+        - token_in_query: []
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "url"
+          type: string
+          in: "query"
+          description: "要提取正文网页的网址，参考 [URL Encoding](http://www.w3schools.com/tags/ref_urlencode.asp)"
+          required: true
+        - name: "fields"
+          in: "query"
+          type: array
+          items:
+            type: string
+            enum:
+              - next
+              - text
+              - markdown
+          collectionFormat: csv
+          description: "指示需要额外返回的字段，取值为：\n
+- `next`: 表示要提取下一页链接。 \n
+- `text`: 表示要返回正文的纯文字格式。 \n
+- `markdown`: 表示返回正文的markdown格式。 \n
+        构造url时多个值通过','号隔开，如`?fields=text,next`。调用sdk时使用列表即可，如fields= ['text', 'markdown']。"
+        - name: "callback"
+          in: "query"
+          description: "使用jsonp实现Ajax跨域请求时需要传此参数"
+          required: false
+          type: string
+        - in: "body"
+          name: "body"
+          description: "需要提取的网页的html源码"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 2000
+      responses:
+        "200":
+          description: "调用成功"
+          schema:
+            $ref: "#/definitions/ArticleForResponse"
+        "400":
+          description: "参数错误"
+        "403":
+          description: "token认证错误、已超出使用配额"
+        "500":
+          description: "服务内部错误"
+
+  /v1/nlp/word/cut:
+    post:
+      tags:
+        - "URL2NLP"
+      summary: "中文分词和词性注解接口"
+      description: "支持中文分词、去停用词、新词发现、词性注解等功能。"
+      operationId: "getWordCut"
+      security:
+        - token_in_query: []
+      consumes:
+        - "text/plain"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "keep_stopwords"
+          in: "query"
+          description: "是否保留停用词"
+          required: false
+          type: boolean
+          default: true
+        - name: "symbols"
+          in: "query"
+          description: "是否返回特殊字符"
+          required: false
+          type: boolean
+          default: true
+        - name: "dict"
+          in: "query"
+          description: "是否使用领域词典(预留)"
+          required: false
+          type: boolean
+          default: false
+        - name: "custom_dict"
+          in: "query"
+          description: "是否使用自定义词典（预留）"
+          required: false
+          type: boolean
+          default: false
+        - name: "with_flag"
+          in: "query"
+          description: "是否返回词性标注"
+          required: false
+          type: boolean
+          default: true
+        - name: "hmm"
+          in: "query"
+          description: "是否使用新词发现"
+          required: false
+          type: boolean
+          default: true
+        - in: "body"
+          name: "body"
+          description: "需要分词的文本"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 5000
+      responses:
+        "200":
+          description: "调用成功"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/NlpWordCutItemForResponse"
+        "400":
+          description: "参数错误"
+        "403":
+          description: "token认证错误；已超出使用配额"
+        "500":
+          description: "服务内部错误"
+
+  /v1/nlp/keywords:
+    post:
+      tags:
+        - "URL2NLP"
+      summary: "关键词提取接口"
+      description: "支持提取出文本中最有代表性的关键词，并给出对应的权重。"
+      operationId: "getKeywords"
+      security:
+        - token_in_query: []
+      consumes:
+        - "text/plain"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "top_k"
+          in: "query"
+          description: "返回关键词的个数，默认10，最大50"
+          required: false
+          type: integer
+          default: 10
+        - name: "with_weight"
+          in: "query"
+          description: "是否返回每个关键词的权重，默认:不返回。"
+          required: false
+          type: boolean
+          default: false
+        - name: "allow_pos"
+          in: "query"
+          description: "允许的关键词词性列表，如只返回动词和名词可以表示为 v,n，默认:允许全部词性。有关词性标签和词性描述，请访问[词性标注](http://url2io.applinzi.com/#url2nlp_pos_tagging)。"
+          required: false
+          type: string
+          default: ""
+        - in: "body"
+          name: "body"
+          description: "需要分词的文本"
+          required: true
+          schema:
+            type: "string"
+            minLength: 1
+            maxLength: 5000
+      responses:
+        "200":
+          description: "调用成功"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/NlpKeywordsItemForResponse"
+        "400":
+          description: "参数错误"
+        "403":
+          description: "token认证错误；已超出使用配额"
+        "500":
+          description: "服务内部错误"
+
+definitions:
+  ArticleForResponse:
+    type: object
+    #    summary: 网页结构智能解析接口返回体
+    description: 网页结构智能解析接口返回体
+    required:
+      - title
+      - url
+      - date
+      - content
+    properties:
+      title:
+        type: string
+        description: 网页正文的标题
+      url:
+        type: string
+        description: 要提取正文网页的网址
+      date:
+        type: string
+        description: 文章的发布日期。ISO 8601格式，2014-01-01 01:01:01。如果没有则返回null
+      content:
+        type: string
+        description: 网页正文
+      text:
+        type: string
+        description: 网页正文的纯文字格式。在请求的fields中指定text时，返回此字段。
+      markdown:
+        type: string
+        description: 网页正文的 markdown 格式。在请求的fields中指定markdown时，返回此字段。
+      next:
+        type: string
+        description: 网页的下一页链接。在请求的fields中指定markdown时，返回此字段。若没有则返回null
+
+  NlpWordCutItemForResponse:
+    type: object
+    description: 分词接口返回体中的单个分词对象
+    required:
+      - word
+    properties:
+      word:
+        type: string
+        description: 词语
+        example: 关键词
+      flag:
+        type: string
+        description: 词性标签，如n、v等。有关词性标签和词性的描述，请访问[词性标注](http://url2io.applinzi.com/#url2nlp_pos_tagging)。
+        example: n
+      flag_desc:
+        type: string
+        description: 词性描述，如动词、名词等
+        example: 名词
+
+  NlpKeywordsItemForResponse:
+    type: object
+    description: 关键词提取接口返回体中的单个分词对象
+    required:
+      - word
+    properties:
+      word:
+        type: string
+        description: 关键词
+      weight:
+        type: number
+        format: float
+        description: 权重
+
+externalDocs:
+  description: "Find out more about URL2io"
+  url: "http://url2io.applinzi.com"
