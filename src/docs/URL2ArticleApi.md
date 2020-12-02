@@ -25,6 +25,7 @@ from pprint import pprint
 
 # Configure API key authorization: token_in_query
 configuration = url2io_client.Configuration()
+configuration = 'YOUR_API_SERVICE_URL' # 你申请的服务地址，默认为体验版地址：http://url2api.applinzi.com
 configuration.api_key['token'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['token'] = 'Bearer'
@@ -83,6 +84,7 @@ from pprint import pprint
 
 # Configure API key authorization: token_in_query
 configuration = url2io_client.Configuration()
+configuration = 'YOUR_API_SERVICE_URL' # 你申请的服务地址，默认为体验版地址：http://url2api.applinzi.com
 configuration.api_key['token'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['token'] = 'Bearer'
