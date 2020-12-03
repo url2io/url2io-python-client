@@ -34,7 +34,7 @@ setup(
     name=NAME,
     version=VERSION,
     description="URL2io API",
-    author_email="url2#sina.com",
+    author_email="url2@sina.com",
     url="https://github.com/url2io/url2io-python-client",
     keywords=["Swagger", "URL2io API"],
     install_requires=REQUIRES,
