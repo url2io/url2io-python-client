@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: "1.0.0"
-  title: "URL2io API"
+  title: "URL2io API client"
   description: "URL2io API 包含 URL2Article 和 URL2NLP 两个服务，实现网页结构智能解析和文本信息智能处理。\n
     当前文档包含所有可用的 API 及使用方法([详细文档](http://url2io.applinzi.com/docs))。\n
     API使用 `token`进行认证，[注册](http://url2io.applinzi.com/accounts/register)后可得。[点此查看token](http://url2io.applinzi.com/console/user/profile)"

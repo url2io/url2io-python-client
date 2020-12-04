@@ -11,6 +11,7 @@
 """
 
 
+import os.path
 from setuptools import setup, find_packages  # noqa: H301
 
 NAME = "url2io-client"
@@ -28,12 +29,18 @@ REQUIRES = [
     "six>=1.10",
     "urllib3>=1.23"
 ]
-    
 
+# # The directory containing this file
+# HERE = os.path.abspath(os.path.dirname(__file__))
+#
+# # The text of the README file
+# with open(os.path.join(HERE, "README.md")) as fid:
+#     README = fid.read()
+    
 setup(
     name=NAME,
     version=VERSION,
-    description="URL2io API",
+    description="URL2io API SDK",
     author_email="url2@sina.com",
     url="https://github.com/url2io/url2io-python-client",
     keywords=["Swagger", "URL2io API"],
@@ -41,6 +48,8 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     long_description="""\
-    URL2io API 包含 URL2Article 和 URL2NLP 两个服务，实现网页结构智能解析和文本信息智能处理。  当前文档包含所有可用的 API 及使用方法([详细文档](http://url2io.applinzi.com/docs))。  API使用 &#x60;token&#x60;进行认证，[注册](http://url2io.applinzi.com/accounts/register)后可得。[点此查看token](http://url2io.applinzi.com/console/user/profile)  # noqa: E501
+    URL2io API SDK包含 URL2Article 和 URL2NLP 两个服务，实现网页结构智能解析和文本信息智能处理。
+    SDK 使用文档，见 https://github.com/url2io/url2io-python-client 。
+    SDK 涉及的 Rest API，见 http://url2io.applinzi.com/docs
     """
 )
