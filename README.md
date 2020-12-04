@@ -15,6 +15,12 @@ Python 2.7 and 3.4+
 ## Installation & Usage
 ### pip install
 
+```sh
+pip install url2io-client
+```
+
+or
+
 If the python package is hosted on Github, you can install directly from Github
 
 ```sh

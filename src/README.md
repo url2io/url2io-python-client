@@ -15,12 +15,18 @@ Python 2.7 and 3.4+
 ## Installation & Usage
 ### pip install
 
+```sh
+pip install url2io-client
+```
+
+or
+
 If the python package is hosted on Github, you can install directly from Github
 
 ```sh
-pip install git+https://github.com/GIT_USER_ID/GIT_REPO_ID.git
+pip install git+https://github.com/url2io/url2io-python-client.git
 ```
-(you may need to run `pip` with root permission: `sudo pip install git+https://github.com/GIT_USER_ID/GIT_REPO_ID.git`)
+(you may need to run `pip` with root permission: `sudo pip install git+https://github.com/url2io/url2io-python-client.git`)
 
 Then import the package:
 ```python
