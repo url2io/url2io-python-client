@@ -1,7 +1,7 @@
 {
   "packageName": "url2io_client",
   "projectName": "url2io-client",
-  "packageVersion": "1.0.0",
+  "packageVersion": "1.0.1",
   "packageUrl": "https://github.com/url2io/url2io-python-client",
   "sortParamsByRequiredFlag": true,
   "hideGenerationTimestamp": true,
